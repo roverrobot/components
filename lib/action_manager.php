@@ -17,18 +17,14 @@ class ConflictActionException extends Exception {
 }
 
 class Doku_Action_Manager extends Doku_Component_Manager {
-    // this array maps action names to their preprocessors
-    private $preprocessors = array();
-    // this array maps action names to their postprocessors
-    private $postprocessors = array();
-    // this holds the renderers
-    private $renderers = array();
-    // this holds the handlers
-    private $handlers = array();
-    // this holds the renderer
+    // this holds the renderer of the specific action
     private $renderer = NULL;
-    // this holds the handler
+    // this holds the handler of the specific action
     private $handler = NULL;
+    // this holds all the loaded renderers
+    private $renderers = array();
+    // this holds all the loaded handlers
+    private $handlers = array();
 
     // create an object and check if it responds to the correct action
     private static function create($class, $action) {
@@ -41,42 +37,10 @@ class Doku_Action_Manager extends Doku_Component_Manager {
      * @param string $class the name of the new class.
      */
 	protected function handle($class) {
-        if (is_subclass_of($class, 'Doku_Action_Preprocessor')) {
-            $this->preprocessors[] = $class;
-            return;
-        }
-        if (is_subclass_of($class, 'Doku_Action_Postprocessor')) {
-            $this->postprocessors[] = $class;
-            return;
-        }
-        if (is_subclass_of($class, 'Doku_Action')) {
+        if (is_subclass_of($class, 'Doku_Action'))
             $this->handlers[] = $class;
-            return;
-        }
-        if (is_subclass_of($class, 'Doku_Action_Renderer')) {
-            $this->renderers[] = $class;
-            return;
-    	}
-	}
-
-	// filter the classes and populate an array of handlers that
-	// can handle the action, and is not extended
-	private function filter($classes, $action) {
-		$handlers = array();
-		foreach ($classes as $class) {
-			$handler = $this->create($class, $action);
-			if (!$handler) continue;
-			if (!$handlers) {
-				$handlers[] = $handler;
-				continue;
-			}
-			if ($handler->action() == $action) {
-				$handlers = array_map(function($old) use($handler) {
-					return (is_subclass_of($handler, get_class($old))) ? $handler : $old;
-				}, $handlers);
-			}
-		}
-		return $handlers;
+        else if (is_subclass_of($class, 'Doku_Action_Renderer')) 
+        	$this->renderers[] = $class;
 	}
 
 	// filter the classes and find the handler that
@@ -108,6 +72,7 @@ class Doku_Action_Manager extends Doku_Component_Manager {
 	 * @return bool whether the action has been performed (regardless of being successful).
 	 */
 	public function act($action) {
+		// some times the action is an array
 		if (is_array($action)) {
 			$result = TRUE;
 			foreach ($action as $act => $x) {
@@ -118,8 +83,6 @@ class Doku_Action_Manager extends Doku_Component_Manager {
 		}
 		$this->handler = NULL;
 		$this->renderer = NULL;
-		$this->preprocessors = array();
-		$this->postprocessors = array();
 		$this->handlers = array();
 		$this->renderers = array();
 
@@ -130,8 +93,6 @@ class Doku_Action_Manager extends Doku_Component_Manager {
 		$path = DOKU_PLUGIN  . $plugin . DOKU_ACTION_ROOT;
 		$this->load($path, $action);
 
-		$this->preprocessors = $this->filter($this->preprocessors, $action);
-		$this->postprocessors = $this->filter($this->postprocessors, $action);
 		$this->handler = $this->unique($this->handlers, $action);
 		$this->renderer = $this->unique($this->renderers, $action);
 
@@ -140,8 +101,6 @@ class Doku_Action_Manager extends Doku_Component_Manager {
             msg('action disabled: ' . htmlspecialchars($action), -1);
             return self::act("show");
         }
-        foreach ($this->preprocessors as $preprocessor)
-            $preprocessor->process();
 
         // check if we can handle the action
         if (!$this->handler) return FALSE;
@@ -153,10 +112,6 @@ class Doku_Action_Manager extends Doku_Component_Manager {
 
         // handle the action
         $new_action = $this->handler->handle();
-
-        // postprocess
-        foreach ($this->postprocessors as $postprocessor)
-            $postprocessor->process();
 
         // handle the next action
         if ($new_action && $new_action !== $action)

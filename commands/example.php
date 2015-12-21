@@ -27,26 +27,6 @@ class Components_Action_Example extends Doku_Action {
     }
 }
 
-// an example post processor, which alters the renderer
-// here the 'pre' and 'div' tags are switched.
-class Component_Action_PostProcessor extends Doku_Action_Postprocessor {
-    /**
-     * Specifies the action name that this process responds to
-     *
-     * @return string the action name
-     */
-    public function action() { return 'example'; }
-
-    /**
-     * process the global data that has been handled by the action handler
-     */
-    public function process() {
-    	global $EXAMPLE_TAG;
-    	if ($EXAMPLE_TAG == 'pre') $EXAMPLE_TAG = 'div';
-    	else if ($EXAMPLE_TAG == 'div') $EXAMPLE_TAG = 'pre';
-    }
-}
-
 class Components_Action_Renderer_Example extends Doku_Action_Renderer {
 	/** action() should return the name of the action that this handler
      *  can handle, e.g., 'edit', 'show', etc.

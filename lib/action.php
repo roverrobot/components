@@ -3,62 +3,6 @@
 define(DOKU_ACTIONS_ROOT, dirname(__FILE__) . '/../commands');
 
 /**
- * These handlers are called right before an action is handled, so that
- * plugins have a change to change the data that is used by an action handler
- * 
- * A preprocessor that inherits from a parent preprocessor will replace the
- * parent.
- * 
- * Multiple preprocessers can be defined, the order that these processors
- * are called us unpredictable. So, to ensure that a preprocessor A should
- * be called before another one B, A should inherit from B, and then calls
- * B's process().
- * 
- * @author Junling Ma <junlingm@gmail.com>
- */
-abstract class Doku_Action_Preprocessor {
-    /**
-     * Specifies the action name that this process responds to
-     *
-     * @return string the action name
-     */
-    abstract public function action();
-
-    /**
-     * process the global data that will be passed to the action handler
-     */
-    abstract public function process();
-}
-
-/**
- * These handlers are called after an action is handled, but before an action
- * is rendered, so that the data that an action renders
- * 
- * A postprocessor that inherits from a parent preprocessor will replace the
- * parent. So, to ensure that a postprocessor A should
- * be called before another one B, A should inherit from B, and then calls
- * B's process().
- * 
- * Multiple postprocessers can be defined, the order that these processors
- * are called us unpredictable. 
- *
- * @author Junling Ma <junlingm@gmail.com>
- */
-abstract class Doku_Action_Postprocessor {
-    /**
-     * Specifies the action name that this process responds to
-     *
-     * @return string the action name
-     */
-    abstract public function action();
-
-    /**
-     * process the global data that has been handled by the action handler
-     */
-    abstract public function process();
-}
-
-/**
  * These renderers renders the output of an action.
  * If a renderer class is extended, then the subclass replaces the parent
  * as the renderer. Two subclasses of a the same parent renderer will cause a
