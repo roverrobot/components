@@ -52,3 +52,9 @@ jQuery.ajax(DOKU_BASE.concat('lib/exe/ajax.php'), {
 	// the data is the returned data from the call function
 });
 ```
+
+=== An Example
+Try put `<slice from=1 to 10/>` in your wiki page. This example is included here in
+- syntax/slice.php
+- script.js
+- ajax/example.php
