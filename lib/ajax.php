@@ -114,10 +114,11 @@ abstract class Doku_AJAX {
 		foreach ($params as $var => $req) {
 			if ($INPUT->has($var)) {
 				$value = $INPUT->param($var);
-				if (is_string($value)) {
+				if (is_array($value)) $type = 'array';
+				else if (is_string($value)) {
 					if ($types[$var] == 'array') {
 						$value = $json->decode($value);
-						$type = ($value === NULL) ? '' : 'array';
+						$type = is_array($value) ? 'array' : NULL;
 					} else $type = 'string';
 				}
 				else if (is_integer($value)) $type = 'int';
@@ -125,8 +126,7 @@ abstract class Doku_AJAX {
 				else if (is_bool($value)) $type = 'bool';
 				else $type = NULL;
 				if ($type !== $types[$var]) {
-					var_dump($value); exit;
-					$this->error(400, $var . ' is expected to be ' . $types[$var]);
+					$this->error(400, $var . ' is expected to be ' . $types[$var] . ' : '.$type);
 				}
 				$vars[$var] = $value;
 			} else if ($req) $this->error(400);
