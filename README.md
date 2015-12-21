@@ -53,7 +53,8 @@ jQuery.ajax(DOKU_BASE.concat('lib/exe/ajax.php'), {
 });
 ```
 
-=== An Example
+### An Example
+
 Try put `<slice from=1 to 10/>` in your wiki page. This example is included here in
 - syntax/slice.php
 - script.js
