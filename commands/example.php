@@ -23,7 +23,7 @@ class Components_Action_Example extends Doku_Action {
     public function handle() {
     	global $EXAMPLE_TAG;
     	global $INPUT;
-    	$EXAMPLE_TAG = $INPUT->str('tag', 'pre');
+    	$EXAMPLE_TAG = htmlspecialchars($INPUT->str('tag', 'pre'));
     }
 }
 
