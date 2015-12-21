@@ -1,7 +1,7 @@
 base   components
 author Junling Ma
 email  junlingm@gmail.com
-date   2015-12-14
+date   2015-12-21a
 name   components plugin
-Idesc  Easily defining new actions and AJAX functions
-url    https://www.dokuwiki.org/plugin:components
+desc  Easily defining new actions and AJAX functions
+url    https://www.dokuwiki.org/plugin:components1

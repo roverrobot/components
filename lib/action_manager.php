@@ -25,6 +25,14 @@ class Doku_Action_Manager extends Doku_Component_Manager {
     private $renderers = array();
     // this holds all the loaded handlers
     private $handlers = array();
+    // this is the default manager
+    private static $manager = NULL;
+
+    public static function manager() {
+    	if (!self::$manager)
+    		self::$manager = new Doku_Action_Manager;
+    	return self::$manager;
+    }
 
     // create an object and check if it responds to the correct action
     private static function create($class, $action) {
@@ -104,7 +112,7 @@ class Doku_Action_Manager extends Doku_Component_Manager {
 
         // check if we can handle the action
         if (!$this->handler) return FALSE;
- 
+
         global $INFO;
         // check permission
         if ($this->handler->permission_required() > $INFO['perm'])

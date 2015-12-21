@@ -1,9 +1,8 @@
 <?php
 
 require_once dirname(__FILE__) . '/../lib/action_manager.php';
-require_once DOKU_PLUGIN . 'action.php';
 
-class action_plugin_projects_action extends DokuWiki_Action_Plugin
+class action_plugin_components_action extends DokuWiki_Action_Plugin
 {
     /**
      * Register its handlers with the DokuWiki's event controller
@@ -14,9 +13,8 @@ class action_plugin_projects_action extends DokuWiki_Action_Plugin
     }
 
     function act(&$event, $param) {
-        global $ACTION_MANAGER;
-        if (!$ACTION_MANAGER) $ACTION_MANAGER = new Doku_Action_Manager();
-        if ($ACTION_MANAGER && $ACTION_MANAGER->act($event->data))
+        $action_manager = Doku_Action_Manager::manager();
+        if ($action_manager && $action_manager->act($event->data))
             $event->preventDefault();
     }
 }
