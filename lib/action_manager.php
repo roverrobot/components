@@ -102,7 +102,8 @@ class Doku_Action_Manager extends Doku_Component_Manager {
         // check if the action is disabled
         if (!actionOK($action)) {
             msg('action disabled: ' . htmlspecialchars($action), -1);
-            return self::act("show");
+            $action = 'show';
+            return self::act($action);
         }
 
         // check if we can handle the action
