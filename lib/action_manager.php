@@ -110,8 +110,10 @@ class Doku_Action_Manager extends Doku_Component_Manager {
 
         global $INFO;
         // check permission
-        if ($this->handler->permission_required() > $INFO['perm'])
-            return $this->act('denied');
+        if ($this->handler->permission_required() > $INFO['perm']) {
+            $action = 'denied';
+            return $this->act($action);
+        }
 
         // handle the action
         $new_action = $this->handler->handle();
