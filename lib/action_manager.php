@@ -79,7 +79,7 @@ class Doku_Action_Manager extends Doku_Component_Manager {
 	 * @param string $action the action to be peformed;
 	 * @return bool whether the action has been performed (regardless of being successful).
 	 */
-	public function act($action) {
+	public function act(&$action) {
 		// some times the action is an array
 		if (is_array($action)) {
 			$result = TRUE;
@@ -120,10 +120,11 @@ class Doku_Action_Manager extends Doku_Component_Manager {
 
         // handle the action
         $new_action = $this->handler->handle();
-
         // handle the next action
-        if ($new_action && $new_action !== $action)
-            return $this->act($new_action);
+        if ($new_action && $new_action !== $action) {
+        	$action = $new_action;
+            return $this->act($action);
+        }
 
         return TRUE;
 	}
