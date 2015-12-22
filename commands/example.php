@@ -12,7 +12,7 @@ class Components_Action_Example extends Doku_Action {
     /** permission_required() should return the permission level that
      *  this action needs, e.g., 'AUTH_NONE', 'AUTH_READ', etc.
      */
-    public function permission_required() { return AUTH_READ; }
+    public function permission_required() { return AUTH_EDIT; }
 
     /** handle() method perform the action, 
      *  and return a command to be passed to
