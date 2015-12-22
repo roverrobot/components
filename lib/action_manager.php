@@ -81,14 +81,9 @@ class Doku_Action_Manager extends Doku_Component_Manager {
 	 */
 	public function act(&$action) {
 		// some times the action is an array
-		if (is_array($action)) {
-			$result = TRUE;
-			foreach ($action as $act => $x) {
-				$result = $result && $this->act($act);
-				if (!result) return FALSE;
-			}
-			return TRUE;
-		}
+		if (is_array($action))
+			list($action) = array_keys($action);
+
 		$this->handler = NULL;
 		$this->renderer = NULL;
 		$this->handlers = array();
