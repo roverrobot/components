@@ -7,7 +7,7 @@ class action_plugin_components_action extends DokuWiki_Action_Plugin
     /**
      * Register its handlers with the DokuWiki's event controller
      */
-    function register(&$controller) {
+    function register(Doku_Event_Handler $controller) {
         $controller->register_hook('ACTION_ACT_PREPROCESS', 'BEFORE', $this,
                                    'act');
     }
